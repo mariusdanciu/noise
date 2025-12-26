@@ -21,10 +21,7 @@ fn anchors(scale: u32) -> Vec<Vec2> {
 }
 
 fn worley_noise(p: Vec2, scale: u32, res: u32, anchors: &Vec<Vec2>) -> f32 {
-    let mut st = p / res as f32;
-
-    st.x *= scale as f32;
-    st.y *= scale as f32;
+    let st = (p / res as f32) * scale as f32;
 
     let current_cell = Vec2::new(st.x.floor(), st.y.floor());
 
