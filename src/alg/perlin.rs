@@ -4,7 +4,7 @@ use rand::prelude::*;
 use crate::alg::{mix_f32, Noise};
 
 fn quintic(p: Vec2) -> Vec2 {
-    return p * p * p * (10.0 + p * (-15.0 + p * 6.0));
+    return p * p * p * (p * (p * 6.0 - 15.) + 10.);
 }
 
 pub struct Perlin {
