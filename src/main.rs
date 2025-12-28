@@ -75,6 +75,7 @@ fn main() {
     let scale = 4;
     let mut imgbuf: ImageBuffer<Rgb<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
+    // Different random points for each octave.
     let anchors = vec![
         rnd_anchors(scale),
         rnd_anchors(scale * 2),
