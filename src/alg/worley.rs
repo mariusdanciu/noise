@@ -1,7 +1,5 @@
 use glam::{Vec2, Vec3};
-
 use crate::alg::{rand, Noise};
-
 
 pub struct Worley {
     scale: u32,

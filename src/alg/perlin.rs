@@ -2,16 +2,6 @@ use glam::{Vec2, Vec3};
 
 use crate::alg::{mix_f32, rand, Noise};
 
-// vec2 noise2x2(vec2 p) {
-//   float x = dot(p, vec2(123.4, 234.5));
-//   float y = dot(p, vec2(345.6, 456.7));
-//   vec2 noise = vec2(x, y);
-//   noise = sin(noise);
-//   noise = noise * 43758.5453;
-//   noise = fract(noise);
-//   return noise;
-// }
-
 fn quintic(p: Vec2) -> Vec2 {
     return p * p * p * (p * (p * 6.0 - 15.) + 10.);
 }
