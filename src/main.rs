@@ -36,13 +36,13 @@ fn main() {
 
     // Different random points for each octave.
     let noises = &mut vec![
-        Worley::new(4),
-        Worley::new(8),
-        Worley::new(16),
-        Worley::new(32),
+        Perlin::new(4),
+        Perlin::new(8),
+        Perlin::new(16),
+        Perlin::new(32),
     ];
 
-    let reverse_col = true;
+    let reverse_col = false;
 
     generate(res, Vec2::new(0., 0.), noises, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);

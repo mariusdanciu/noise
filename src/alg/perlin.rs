@@ -1,22 +1,6 @@
-use std::collections::HashSet;
-
 use glam::{Vec2, Vec3};
-use rand::prelude::*;
 
-use crate::alg::{mix_f32, mix_vec3, Noise};
-
-fn noise(p: Vec2) -> Vec2 {
-    let p = p + 0.02;
-    let x = p.dot(Vec2::new(123.4, 234.5));
-    let y = p.dot(Vec2::new(234.5, 345.6));
-    let mut noise = Vec2::new(x, y);
-
-    noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
-    noise = noise * 43758.5453;
-
-    noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
-    return noise * 1.01;
-}
+use crate::alg::{mix_f32, rand, Noise};
 
 // vec2 noise2x2(vec2 p) {
 //   float x = dot(p, vec2(123.4, 234.5));
@@ -56,10 +40,10 @@ impl Noise for Perlin {
         let br = grid_id + Vec2::new(1.0, 1.0);
         let bl = grid_id + Vec2::new(0.0, 1.0);
 
-        let grad_tl = noise(tl);
-        let grad_tr = noise(tr);
-        let grad_br = noise(br);
-        let grad_bl = noise(bl);
+        let grad_tl = rand(tl);
+        let grad_tr = rand(tr);
+        let grad_br = rand(br);
+        let grad_bl = rand(bl);
 
         let uv_to_tl = grid_uv - Vec2::new(0.0, 0.0);
         let uv_to_tr = grid_uv - Vec2::new(1.0, 0.0);

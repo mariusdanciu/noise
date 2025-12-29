@@ -1,20 +1,7 @@
 use glam::{Vec2, Vec3};
-use rand::prelude::*;
 
-use crate::alg::{mix_vec3, Noise};
+use crate::alg::{rand, Noise};
 
-fn noise(p: Vec2) -> Vec2 {
-    //let p = p + 0.02;
-    let x = p.dot(Vec2::new(123.4, 234.5));
-    let y = p.dot(Vec2::new(234.5, 345.6));
-    let mut noise = Vec2::new(x, y);
-
-    noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
-    noise = noise * 43758.5453;
-
-    noise = noise.fract();
-    return noise;
-}
 
 pub struct Worley {
     scale: u32,
@@ -38,7 +25,7 @@ impl Noise for Worley {
             for nx in -1..=1 {
                 let offset_cell = Vec2::new(nx as f32, ny as f32);
 
-                let point = (noise(current_cell + offset_cell)).abs();
+                let point = (rand(current_cell + offset_cell)).abs();
 
                 let diff = (current_cell + offset_cell + point) - st;
 
