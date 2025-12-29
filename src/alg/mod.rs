@@ -19,5 +19,5 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
 }
 
 pub trait Noise {
-    fn noise(&self, uv: Vec2) -> Vec3;
+    fn noise(&mut self, uv: Vec2) -> Vec3;
 }

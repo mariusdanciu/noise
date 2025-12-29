@@ -1,40 +1,36 @@
 use glam::{Vec2, Vec3};
 use rand::prelude::*;
 
-use crate::alg::Noise;
+use crate::alg::{mix_vec3, Noise};
+
+fn noise(p: Vec2) -> Vec2 {
+    //let p = p + 0.02;
+    let x = p.dot(Vec2::new(123.4, 234.5));
+    let y = p.dot(Vec2::new(234.5, 345.6));
+    let mut noise = Vec2::new(x, y);
+
+    noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
+    noise = noise * 43758.5453;
+
+    noise = noise.fract();
+    return noise;
+}
 
 pub struct Worley {
     scale: u32,
-    anchors: Vec<Vec2>,
 }
 
 impl Worley {
-    fn rnd_anchors(scale: u32) -> Vec<Vec2> {
-        let mut anchors: Vec<Vec2> = Vec::with_capacity((scale * scale) as usize);
-        let mut rng = rand::rng();
-        for _ in 0..scale * scale {
-            let rx = rng.random::<f32>();
-            let ry = rng.random::<f32>();
-
-            anchors.push(Vec2::new(rx, ry));
-        }
-
-        anchors
-    }
-
     pub fn new(scale: u32) -> Worley {
-        Worley {
-            scale,
-            anchors: Worley::rnd_anchors(scale),
-        }
+        Worley { scale }
     }
 }
 
 impl Noise for Worley {
-    fn noise(&self, uv: Vec2) -> Vec3 {
+    fn noise(&mut self, uv: Vec2) -> Vec3 {
         let st = uv * self.scale as f32;
 
-        let current_cell = Vec2::new(st.x.floor(), st.y.floor());
+        let current_cell = st.floor();
 
         let mut min_dist = 1.0f32;
 
@@ -42,15 +38,7 @@ impl Noise for Worley {
             for nx in -1..=1 {
                 let offset_cell = Vec2::new(nx as f32, ny as f32);
 
-                let index = ((current_cell.x + offset_cell.x)
-                    + (current_cell.y + offset_cell.y) * self.scale as f32)
-                    as usize;
-
-                let point: Vec2;
-                match self.anchors.get(index) {
-                    None => continue,
-                    Some(p) => point = *p,
-                }
+                let point = (noise(current_cell + offset_cell)).abs();
 
                 let diff = (current_cell + offset_cell + point) - st;
 
@@ -59,6 +47,7 @@ impl Noise for Worley {
                 min_dist = min_dist.min(dist);
             }
         }
+
         Vec3::new(min_dist, min_dist, min_dist)
     }
 }
