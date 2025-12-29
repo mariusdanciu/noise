@@ -34,7 +34,6 @@ fn main() {
     let res = 500;
     let mut imgbuf: ImageBuffer<Rgb<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    // Different random points for each octave.
     let noises = &mut vec![
         Perlin::new(4),
         Perlin::new(8),
