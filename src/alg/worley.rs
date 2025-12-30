@@ -1,5 +1,5 @@
-use glam::{Vec2, Vec3};
 use crate::alg::{rand, Noise};
+use glam::{Vec2, Vec3};
 
 pub struct Worley {
     scale: u32,
@@ -12,7 +12,7 @@ impl Worley {
 }
 
 impl Noise for Worley {
-    fn noise(&mut self, uv: Vec2) -> Vec3 {
+    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
         let st = uv * self.scale as f32;
 
         let current_cell = st.floor();
@@ -23,7 +23,7 @@ impl Noise for Worley {
             for nx in -1..=1 {
                 let offset_cell = Vec2::new(nx as f32, ny as f32);
 
-                let point = (rand(current_cell + offset_cell)).abs();
+                let point = ((rand(current_cell + offset_cell, seed)) + 1.) * 0.5;
 
                 let diff = (current_cell + offset_cell + point) - st;
 

@@ -17,7 +17,7 @@ impl Perlin {
 }
 
 impl Noise for Perlin {
-    fn noise(&mut self, uv: Vec2) -> Vec3 {
+    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
         let s_uv = uv * self.scale as f32;
 
         let grid_id = s_uv.floor();
@@ -30,10 +30,10 @@ impl Noise for Perlin {
         let br = grid_id + Vec2::new(1.0, 1.0);
         let bl = grid_id + Vec2::new(0.0, 1.0);
 
-        let grad_tl = rand(tl);
-        let grad_tr = rand(tr);
-        let grad_br = rand(br);
-        let grad_bl = rand(bl);
+        let grad_tl = rand(tl, seed);
+        let grad_tr = rand(tr, seed);
+        let grad_br = rand(br, seed);
+        let grad_bl = rand(bl, seed);
 
         let uv_to_tl = grid_uv - Vec2::new(0.0, 0.0);
         let uv_to_tr = grid_uv - Vec2::new(1.0, 0.0);

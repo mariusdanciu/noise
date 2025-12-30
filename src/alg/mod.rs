@@ -16,7 +16,7 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
     start * (1. - a) + stop * a
 }
 
-pub fn rand(p: Vec2) -> Vec2 {
+pub fn rand(p: Vec2, seed: f32) -> Vec2 {
     let p = p + 0.02;
     let x = p.dot(Vec2::new(123.4, 234.5));
     let y = p.dot(Vec2::new(234.5, 345.6));
@@ -25,10 +25,10 @@ pub fn rand(p: Vec2) -> Vec2 {
     noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
     noise = noise * 43758.5453;
 
-    noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
+    noise = Vec2::new(f32::sin(noise.x + seed), f32::sin(noise.y + seed));
     return noise * 1.01;
 }
 
 pub trait Noise {
-    fn noise(&mut self, uv: Vec2) -> Vec3;
+    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3;
 }
