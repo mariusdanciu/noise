@@ -4,6 +4,9 @@ pub mod fbm;
 pub mod perlin;
 pub mod worley;
 
+const V1: Vec2 = Vec2::new(123.4, 234.5);
+const V2: Vec2 = Vec2::new(234.5, 345.6);
+
 pub fn mix_vec3(start: f32, stop: f32, a: Vec3) -> Vec3 {
     Vec3::new(
         start * (1. - a.x) + stop * a.x,
@@ -18,8 +21,8 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
 
 pub fn rand(p: Vec2, seed: f32) -> Vec2 {
     let p = p + 0.02;
-    let x = p.dot(Vec2::new(123.4, 234.5));
-    let y = p.dot(Vec2::new(234.5, 345.6));
+    let x = p.dot(V1);
+    let y = p.dot(V2);
     let mut noise = Vec2::new(x, y);
 
     noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y));
