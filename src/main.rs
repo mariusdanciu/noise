@@ -37,16 +37,17 @@ fn main() {
 
     // Multiple noises for different octaves.
     let noises = &mut vec![
-        Worley::new(2),
-        Worley::new(4),
-        Worley::new(8),
-        Worley::new(16),
-        Worley::new(32),
+        Perlin::new(1),
+        Perlin::new(2),
+        Perlin::new(4),
+        Perlin::new(8),
+        Perlin::new(16),
+        Perlin::new(32),
     ];
 
-    let a = 1.0f32; // 1 - inverse col, 0 - keep the exact col.
+    let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
 
-    generate(res, 11., Vec2::new(0., 0.), noises, |ix, iy, col| {
+    generate(res, 17., Vec2::new(0., 0.), noises, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let rgb = mix_vec3(0., 255., (1. - col) * a + (1. - a) * col);
