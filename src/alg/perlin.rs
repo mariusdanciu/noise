@@ -7,18 +7,18 @@ fn quintic(p: Vec2) -> Vec2 {
 }
 
 pub struct Perlin {
-    pub scale: u32,
+    pub scale: f32,
 }
 
 impl Perlin {
-    pub fn new(scale: u32) -> Perlin {
+    pub fn new(scale: f32) -> Perlin {
         Perlin { scale }
     }
 }
 
 impl Noise for Perlin {
     fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
-        let s_uv = uv * self.scale as f32;
+        let s_uv = uv * self.scale;
 
         let grid_id = s_uv.floor();
         let mut grid_uv = s_uv - grid_id;

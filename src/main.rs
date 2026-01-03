@@ -37,12 +37,12 @@ fn main() {
 
     // Multiple noises for different octaves.
     let noises = &mut vec![
-        Perlin::new(1),
-        Perlin::new(2),
-        Perlin::new(4),
-        Perlin::new(8),
-        Perlin::new(16),
-        Perlin::new(32),
+        Perlin::new(1.),
+        Perlin::new(2.),
+        Perlin::new(4.),
+        Perlin::new(8.),
+        Perlin::new(16.),
+        Perlin::new(32.),
     ];
 
     let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
