@@ -15,4 +15,4 @@
 
 ### FBM with 6 octaves
 
-![](./perlin_fbm6.png)
+![](./value_fbm6.png)
