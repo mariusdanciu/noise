@@ -2,10 +2,15 @@ use glam::{Vec2, Vec3};
 
 pub mod fbm;
 pub mod perlin;
+pub mod value;
 pub mod worley;
 
 const V1: Vec2 = Vec2::new(123.4, 234.5);
 const V2: Vec2 = Vec2::new(234.5, 345.6);
+
+fn quintic(p: Vec2) -> Vec2 {
+    return p * p * p * (p * (p * 6.0 - 15.) + 10.);
+}
 
 pub fn mix_vec3(start: f32, stop: f32, a: Vec3) -> Vec3 {
     Vec3::new(
@@ -30,6 +35,16 @@ pub fn rand(p: Vec2, seed: f32) -> Vec2 {
 
     noise = Vec2::new(f32::sin(noise.x + seed), f32::sin(noise.y + seed));
     return noise * 1.01;
+}
+
+pub fn rand_f32(p: Vec2, seed: f32) -> f32 {
+    let mut noise = p.dot(Vec2::new(12.9898, 78.233));
+
+    noise = f32::sin(noise);
+    noise = noise * 43758.5453;
+
+    noise = f32::sin(noise + seed);
+    return noise;
 }
 
 pub trait Noise {

@@ -6,6 +6,7 @@ use image::{ImageBuffer, Rgb};
 
 use crate::alg::fbm::fbm;
 use crate::alg::perlin::Perlin;
+use crate::alg::value::Value;
 use crate::alg::worley::Worley;
 use crate::alg::Noise;
 use crate::alg::{mix_vec3, worley};
@@ -45,9 +46,9 @@ fn main() {
         Perlin::new(32.),
     ];
 
-    let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
+    let a = 1.0f32; // 1 - inverse col, 0 - keep the exact col.
 
-    generate(res, 17., Vec2::new(0., 0.), noises, |ix, iy, col| {
+    generate(res, 35., Vec2::new(0., -0.1), noises, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let rgb = mix_vec3(0., 255., (1. - col) * a + (1. - a) * col);

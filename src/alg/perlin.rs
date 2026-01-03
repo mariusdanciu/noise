@@ -1,10 +1,8 @@
 use glam::{Vec2, Vec3};
 
-use crate::alg::{mix_f32, rand, Noise};
+use crate::alg::{mix_f32, rand, Noise, quintic};
 
-fn quintic(p: Vec2) -> Vec2 {
-    return p * p * p * (p * (p * 6.0 - 15.) + 10.);
-}
+
 
 pub struct Perlin {
     pub scale: f32,
@@ -22,8 +20,6 @@ impl Noise for Perlin {
 
         let grid_id = s_uv.floor();
         let mut grid_uv = s_uv - grid_id;
-
-        let s = format!("{},{}", grid_id.x, grid_id.y);
 
         let tl = grid_id + Vec2::new(0.0, 0.0);
         let tr = grid_id + Vec2::new(1.0, 0.0);

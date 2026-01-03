@@ -1,11 +1,18 @@
 ## Worley noise image generation
 
-### FBM with 5 octaves
+### FBM with 6 octaves
 
-![](./worley_fbm4.png)
+![](./worley_fbm6.png)
 
 ## Perlin noise image generation
 
-### FBM with 5 octaves
+### FBM with 6 octaves
 
-![](./perlin_fbm4.png)
+![](./perlin_fbm6.png)
+
+
+## Value noise image generation
+
+### FBM with 6 octaves
+
+![](./perlin_fbm6.png)
