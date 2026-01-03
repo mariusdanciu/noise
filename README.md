@@ -10,7 +10,6 @@
 
 ![](./perlin_fbm6.png)
 
-
 ## Value noise image generation
 
 ### FBM with 6 octaves
