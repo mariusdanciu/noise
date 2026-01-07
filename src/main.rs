@@ -2,7 +2,7 @@ mod alg;
 
 use glam::{Vec2, Vec3};
 
-use image::{ImageBuffer, Rgb};
+use image::{ImageBuffer, Rgb, Rgba};
 
 use crate::alg::fbm::fbm;
 use crate::alg::perlin::Perlin;
@@ -34,7 +34,7 @@ fn generate(
 
 fn main() {
     let res = 500;
-    let mut imgbuf: ImageBuffer<Rgb<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
+    let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
     // Multiple noises for different octaves.
     let noises = &mut vec![
@@ -46,14 +46,14 @@ fn main() {
         Perlin::new(32.),
     ];
 
-    let a = 1.0f32; // 1 - inverse col, 0 - keep the exact col.
+    let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
 
-    generate(res, 35., Vec2::new(0., -0.1), noises, |ix, iy, col| {
+    generate(res, 55., Vec2::new(0., 0.0), noises, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let rgb = mix_vec3(0., 255., (1. - col) * a + (1. - a) * col);
 
-        *pixel = image::Rgb([rgb.x as u8, rgb.y as u8, rgb.z as u8]);
+        *pixel = image::Rgba([rgb.x as u8, rgb.y as u8, rgb.z as u8, 255u8]);
     });
 
     imgbuf.save("out.png").unwrap();

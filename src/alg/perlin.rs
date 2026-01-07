@@ -1,8 +1,6 @@
 use glam::{Vec2, Vec3};
 
-use crate::alg::{mix_f32, rand, Noise, quintic};
-
-
+use crate::alg::{mix_f32, quintic, rand, Noise};
 
 pub struct Perlin {
     pub scale: f32,
