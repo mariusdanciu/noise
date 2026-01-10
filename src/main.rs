@@ -15,7 +15,7 @@ fn generate(
     res: u32,
     seed: f32,
     offset: Vec2,
-    noises: &mut Vec<impl Noise>,
+    noise: &impl Noise,
     mut f: impl FnMut(u32, u32, Vec3),
 ) -> Vec<u8> {
     for iy in 0..res {
@@ -23,8 +23,10 @@ fn generate(
             let p = Vec2::new(ix as f32, iy as f32);
             let uv = p / res as f32 + offset;
 
-            let col = fbm(uv, noises, seed);
-
+            let mut col = fbm(uv, 6, noise, 0.5, 2.0, seed);
+            if noise.rescale_01() {
+                col = (col + 1.0) * 0.5;
+            }
             f(ix, iy, col);
         }
     }
@@ -36,19 +38,10 @@ fn main() {
     let res = 500;
     let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    // Multiple noises for different octaves.
-    let noises = &mut vec![
-        Perlin::new(1.),
-        Perlin::new(2.),
-        Perlin::new(4.),
-        Perlin::new(8.),
-        Perlin::new(16.),
-        Perlin::new(32.),
-    ];
-
     let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
 
-    generate(res, 55., Vec2::new(0., 0.0), noises, |ix, iy, col| {
+    let noise_alg = Perlin::new();
+    generate(res, 25., Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let rgb = mix_vec3(0., 255., (1. - col) * a + (1. - a) * col);

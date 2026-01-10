@@ -1,19 +1,17 @@
 use crate::alg::{rand, Noise};
 use glam::{Vec2, Vec3};
 
-pub struct Worley {
-    scale: f32,
-}
+pub struct Worley {}
 
 impl Worley {
-    pub fn new(scale: f32) -> Worley {
-        Worley { scale }
+    pub fn new() -> Worley {
+        Worley {}
     }
 }
 
 impl Noise for Worley {
-    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
-        let st = uv * self.scale;
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+        let st = uv * freq;
 
         let current_cell = st.floor();
 
@@ -34,5 +32,9 @@ impl Noise for Worley {
         }
 
         Vec3::new(min_dist, min_dist, min_dist)
+    }
+
+    fn rescale_01(&self) -> bool {
+        false
     }
 }

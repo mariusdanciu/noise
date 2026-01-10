@@ -34,7 +34,7 @@ pub fn rand(p: Vec2, seed: f32) -> Vec2 {
     noise = noise * 43758.5453;
 
     noise = Vec2::new(f32::sin(noise.x + seed), f32::sin(noise.y + seed));
-    return noise * 1.01;
+    return noise;
 }
 
 pub fn rand_f32(p: Vec2, seed: f32) -> f32 {
@@ -48,5 +48,6 @@ pub fn rand_f32(p: Vec2, seed: f32) -> f32 {
 }
 
 pub trait Noise {
-    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3;
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3;
+    fn rescale_01(&self) ->bool;
 }

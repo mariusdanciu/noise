@@ -2,19 +2,17 @@ use glam::{Vec2, Vec3};
 
 use crate::alg::{mix_f32, quintic, rand, Noise};
 
-pub struct Perlin {
-    pub scale: f32,
-}
+pub struct Perlin {}
 
 impl Perlin {
-    pub fn new(scale: f32) -> Perlin {
-        Perlin { scale }
+    pub fn new() -> Perlin {
+        Perlin {}
     }
 }
 
 impl Noise for Perlin {
-    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
-        let s_uv = uv * self.scale;
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+        let s_uv = uv * freq;
 
         let grid_id = s_uv.floor();
         let mut grid_uv = s_uv - grid_id;
@@ -44,8 +42,12 @@ impl Noise for Perlin {
         let t = mix_f32(dot_tl, dot_tr, grid_uv.x);
         let b = mix_f32(dot_bl, dot_br, grid_uv.x);
 
-        let noise = mix_f32(t, b, grid_uv.y) + 0.1;
+        let noise = mix_f32(t, b, grid_uv.y);
 
         Vec3::new(noise, noise, noise)
+    }
+
+    fn rescale_01(&self) -> bool {
+        true
     }
 }

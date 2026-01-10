@@ -2,19 +2,17 @@ use glam::{Vec2, Vec3};
 
 use crate::alg::{mix_f32, quintic, rand_f32, Noise};
 
-pub struct Value {
-    pub scale: f32,
-}
+pub struct Value {}
 
 impl Value {
-    pub fn new(scale: f32) -> Value {
-        Value { scale }
+    pub fn new() -> Value {
+        Value {}
     }
 }
 
 impl Noise for Value {
-    fn noise(&mut self, uv: Vec2, seed: f32) -> Vec3 {
-        let s_uv = uv * self.scale;
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+        let s_uv = uv * freq;
 
         let grid_id = s_uv.floor();
         let mut grid_uv = s_uv - grid_id;
@@ -34,8 +32,12 @@ impl Noise for Value {
         let t = mix_f32(grad_tl, grad_tr, grid_uv.x);
         let b = mix_f32(grad_bl, grad_br, grid_uv.x);
 
-        let noise = mix_f32(t, b, grid_uv.y) / 2.0;
+        let noise = mix_f32(t, b, grid_uv.y) * 0.5;
 
         Vec3::new(noise, noise, noise)
+    }
+    
+    fn rescale_01(&self) ->bool {
+        true
     }
 }
