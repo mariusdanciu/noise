@@ -1,15 +1,14 @@
-mod alg;
 
 use glam::{Vec2, Vec3};
 
 use image::{ImageBuffer, Rgb, Rgba};
 
-use crate::alg::fbm::fbm;
-use crate::alg::perlin::Perlin;
-use crate::alg::value::Value;
-use crate::alg::worley::Worley;
-use crate::alg::Noise;
-use crate::alg::{mix_vec3, worley};
+use noise::alg::fbm::fbm;
+use noise::alg::perlin::Perlin;
+use noise::alg::value::Value;
+use noise::alg::worley::Worley;
+use noise::alg::Noise;
+use noise::alg::{mix_vec3, worley};
 
 fn generate(
     res: u32,
