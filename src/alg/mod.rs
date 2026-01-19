@@ -30,7 +30,6 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
 }
 
 pub fn rand(p: Vec2, seed: f32) -> Vec2 {
-    let p = p + 0.02;
     let x = p.dot(V1.xy());
     let y = p.dot(V2.xy());
     let mut noise = Vec2::new(x, y);
@@ -52,7 +51,11 @@ pub fn rand3D(p: Vec3, seed: f32) -> Vec3 {
     noise = Vec3::new(f32::sin(noise.x), f32::sin(noise.y), f32::sin(noise.z));
     noise = noise * 43758.5453;
 
-    noise = Vec3::new(f32::sin(noise.x + seed), f32::sin(noise.y + seed), f32::sin(noise.z + seed));
+    noise = Vec3::new(
+        f32::sin(noise.x + seed),
+        f32::sin(noise.y + seed),
+        f32::sin(noise.z + seed),
+    );
     return noise;
 }
 
@@ -67,10 +70,10 @@ pub fn rand_f32(p: Vec2, seed: f32) -> f32 {
 }
 
 pub trait Noise {
-    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3;
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> f32;
     fn rescale_01(&self) -> bool;
 }
 
 pub trait Noise3D {
-    fn noise(&self, uv: Vec3, freq: f32, seed: f32) -> Vec3;
+    fn noise(&self, uv: Vec3, freq: f32, seed: f32) -> f32;
 }

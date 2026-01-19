@@ -9,8 +9,8 @@ pub fn fbm(
     persistence: f32,
     lacunarity: f32,
     seed: f32,
-) -> Vec3 {
-    let mut sum = Vec3::ZERO;
+) -> f32 {
+    let mut sum = 0.0f32;
     let mut amplitude = 1.0;
     let mut freq = 1.0;
 
@@ -29,8 +29,8 @@ pub fn fbm_3d(
     persistence: f32,
     lacunarity: f32,
     seed: f32,
-) -> Vec3 {
-    let mut sum = Vec3::ZERO;
+) -> f32 {
+    let mut sum = 0.0f32;
     let mut amplitude = 1.0;
     let mut freq = 1.0;
 

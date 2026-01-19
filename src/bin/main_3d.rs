@@ -6,7 +6,7 @@ use noise::alg::fbm::fbm_3d;
 use noise::alg::perlin::Perlin;
 use noise::alg::value::Value;
 use noise::alg::worley::Worley;
-use noise::alg::{mix_vec3, worley};
+use noise::alg::{mix_f32, mix_vec3, worley};
 use noise::alg::{Noise, Noise3D};
 
 fn generate(
@@ -15,7 +15,7 @@ fn generate(
     layer: u32,
     offset: Vec3,
     noise: &impl Noise3D,
-    mut f: impl FnMut(u32, u32, u32, Vec3),
+    mut f: impl FnMut(u32, u32, u32, f32),
 ) -> Vec<u8> {
     for iy in 0..res {
         for ix in 0..res {
@@ -48,10 +48,10 @@ fn main() {
             let pixel = imgbuf.get_pixel_mut(ix, iy);
 
             let col = (col + 1.0) * 0.5;
-            let rgb = mix_vec3(0., 255., (1. - col) * a + (1. - a) * col);
+            let noise = mix_f32(0., 255., (1. - col) * a + (1. - a) * col) as u8;
 
 
-            *pixel = image::Rgba([rgb.x as u8, rgb.y as u8, rgb.z as u8, 255u8]);
+            *pixel = image::Rgba([noise, noise, noise, 255u8]);
         },
     );
 

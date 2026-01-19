@@ -11,7 +11,7 @@ impl Perlin {
 }
 
 impl Noise for Perlin {
-    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> f32 {
         let s_uv = uv * freq;
 
         let grid_id = s_uv.floor();
@@ -44,7 +44,7 @@ impl Noise for Perlin {
 
         let noise = mix_f32(t, b, grid_uv.y);
 
-        Vec3::new(noise, noise, noise)
+        noise
     }
 
     fn rescale_01(&self) -> bool {
@@ -53,7 +53,7 @@ impl Noise for Perlin {
 }
 
 impl Noise3D for Perlin {
-    fn noise(&self, uv: Vec3, freq: f32, seed: f32) -> Vec3 {
+    fn noise(&self, uv: Vec3, freq: f32, seed: f32) -> f32 {
         let s_uv = uv * freq;
 
         let grid_id = s_uv.floor();
@@ -115,6 +115,6 @@ impl Noise3D for Perlin {
             grid_uv.z,
         );
 
-        Vec3::new(noise, noise, noise)
+        noise
     }
 }

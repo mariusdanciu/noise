@@ -11,7 +11,7 @@ impl Value {
 }
 
 impl Noise for Value {
-    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> f32 {
         let s_uv = uv * freq;
 
         let grid_id = s_uv.floor();
@@ -34,7 +34,7 @@ impl Noise for Value {
 
         let noise = mix_f32(t, b, grid_uv.y) * 0.5;
 
-        Vec3::new(noise, noise, noise)
+        noise
     }
     
     fn rescale_01(&self) ->bool {

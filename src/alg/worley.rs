@@ -10,7 +10,7 @@ impl Worley {
 }
 
 impl Noise for Worley {
-    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> Vec3 {
+    fn noise(&self, uv: Vec2, freq: f32, seed: f32) -> f32 {
         let st = uv * freq;
 
         let current_cell = st.floor();
@@ -31,7 +31,7 @@ impl Noise for Worley {
             }
         }
 
-        Vec3::new(min_dist, min_dist, min_dist)
+        min_dist
     }
 
     fn rescale_01(&self) -> bool {
