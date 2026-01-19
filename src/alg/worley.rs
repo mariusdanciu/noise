@@ -33,8 +33,7 @@ impl Noise for Worley {
 
         min_dist
     }
-
-    fn rescale_01(&self) -> bool {
-        false
+    fn rescale_01(&self, noise: f32) -> f32 {
+        noise
     }
 }

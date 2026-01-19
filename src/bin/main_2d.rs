@@ -1,4 +1,3 @@
-
 use glam::{Vec2, Vec3};
 
 use image::{ImageBuffer, Rgb, Rgba};
@@ -22,8 +21,8 @@ fn generate(
             let p = Vec2::new(ix as f32, iy as f32);
             let uv = p / res as f32 + offset;
 
-            let mut col = fbm(uv, 6, noise, 0.5, 2.0, seed);
-            col = (col + 1.0)*0.5;
+            let col = fbm(uv, 6, noise, 0.5, 2.0, seed);
+            let col = noise.rescale_01(col);
             f(ix, iy, col);
         }
     }
@@ -35,13 +34,11 @@ fn main() {
     let res = 500;
     let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
-
     let noise_alg = Perlin::new();
-    generate(res, 25., Vec2::new(0.1, 0.0), &noise_alg, |ix, iy, col| {
+    generate(res, 137., Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
-        let noise = mix_f32(0., 255., (1. - col) * a + (1. - a) * col) as u8;
+        let noise = ((1. - col) * 255.) as u8;
 
         *pixel = image::Rgba([noise, noise, noise, 255u8]);
     });

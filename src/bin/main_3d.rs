@@ -17,6 +17,8 @@ fn generate(
     noise: &impl Noise3D,
     mut f: impl FnMut(u32, u32, u32, f32),
 ) -> Vec<u8> {
+    let mut min = 1.0f32;
+    let mut max = 0.0;
     for iy in 0..res {
         for ix in 0..res {
             let p = Vec3::new(ix as f32, iy as f32, layer as f32);
@@ -24,10 +26,18 @@ fn generate(
 
             let col = fbm_3d(uv, 6, noise, 0.5, 2.0, seed);
 
+            let col = noise.rescale_01(col);
+            if col < min {
+                min = col;
+            }
+            if col > max {
+                max = col;
+            }
             f(ix, iy, layer, col);
         }
     }
 
+    println!("min {} max {}", min, max);
     vec![]
 }
 
@@ -35,21 +45,17 @@ fn main() {
     let res = 500;
     let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    let a = 0.0f32; // 1 - inverse col, 0 - keep the exact col.
-
     let noise_alg = Perlin::new();
     generate(
         res,
-        25.,
+        115.,
         0,
         Vec3::new(0., 0.0, 0.0),
         &noise_alg,
         |ix, iy, iz, col| {
             let pixel = imgbuf.get_pixel_mut(ix, iy);
 
-            let col = (col + 1.0) * 0.5;
-            let noise = mix_f32(0., 255., (1. - col) * a + (1. - a) * col) as u8;
-
+            let noise = (col * 255.) as u8;
 
             *pixel = image::Rgba([noise, noise, noise, 255u8]);
         },

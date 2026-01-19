@@ -1,6 +1,6 @@
 use glam::{Vec2, Vec3};
 
-use crate::alg::{mix_f32, quintic, quintic3D, rand, rand3D, Noise, Noise3D};
+use crate::alg::{mix_f32, quintic, quintic3D, rand, rand_3d, Noise, Noise3D};
 
 pub struct Perlin {}
 
@@ -47,8 +47,8 @@ impl Noise for Perlin {
         noise
     }
 
-    fn rescale_01(&self) -> bool {
-        true
+    fn rescale_01(&self, noise: f32) -> f32 {
+        (noise + 1.) * 0.5
     }
 }
 
@@ -69,15 +69,15 @@ impl Noise3D for Perlin {
         let br_back = grid_id + Vec3::new(1.0, 1.0, 1.0);
         let bl_back = grid_id + Vec3::new(0.0, 1.0, 1.0);
 
-        let grad_tl_front = rand3D(tl_front, seed);
-        let grad_tr_front = rand3D(tr_front, seed);
-        let grad_br_front = rand3D(br_front, seed);
-        let grad_bl_front = rand3D(bl_front, seed);
+        let grad_tl_front = rand_3d(tl_front, seed);
+        let grad_tr_front = rand_3d(tr_front, seed);
+        let grad_br_front = rand_3d(br_front, seed);
+        let grad_bl_front = rand_3d(bl_front, seed);
 
-        let grad_tl_back = rand3D(tl_back, seed);
-        let grad_tr_back = rand3D(tr_back, seed);
-        let grad_br_back = rand3D(br_back, seed);
-        let grad_bl_back = rand3D(bl_back, seed);
+        let grad_tl_back = rand_3d(tl_back, seed);
+        let grad_tr_back = rand_3d(tr_back, seed);
+        let grad_br_back = rand_3d(br_back, seed);
+        let grad_bl_back = rand_3d(bl_back, seed);
 
         let uv_to_tl_front = grid_uv - Vec3::new(0.0, 0.0, 0.0);
         let uv_to_tr_front = grid_uv - Vec3::new(1.0, 0.0, 0.0);
@@ -116,5 +116,8 @@ impl Noise3D for Perlin {
         );
 
         noise
+    }
+    fn rescale_01(&self, noise: f32) -> f32 {
+       (noise + 1.) * 0.5
     }
 }

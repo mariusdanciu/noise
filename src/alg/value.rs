@@ -37,7 +37,7 @@ impl Noise for Value {
         noise
     }
     
-    fn rescale_01(&self) ->bool {
-        true
+    fn rescale_01(&self, noise: f32) -> f32 {
+        (noise + 1.) * 0.5
     }
 }
