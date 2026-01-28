@@ -34,8 +34,8 @@ fn main() {
     let res = 500;
     let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    let noise_alg = Perlin::new();
-    generate(res, 137., Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
+    let noise_alg = Worley::new();
+    generate(res, 0., Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let noise = ((1. - col) * 255.) as u8;
