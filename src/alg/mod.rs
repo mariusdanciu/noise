@@ -29,6 +29,10 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
     start * (1. - a) + stop * a
 }
 
+pub fn mod3(x: Vec3, m: f32) -> Vec3 {
+    x - m * (x / m).floor()
+}
+
 pub fn rand(p: Vec2, seed: f32) -> Vec2 {
     let x = p.dot(V1.xy());
     let y = p.dot(V2.xy());
@@ -54,6 +58,28 @@ pub fn rand_3d(p: Vec3, seed: f32) -> Vec3 {
         f32::sin(noise.y + seed),
         f32::sin(noise.z + seed),
     );
+    return noise;
+}
+
+fn seedFromFloat(s: f32) -> Vec3 {
+    return Vec3::new(
+        (s * 0.1031).fract(),
+        (s * 0.11369).fract(),
+        (s * 0.13787).fract(),
+    ) * 100.0;
+}
+
+pub fn rand_3d_periodic(p: Vec3, seed: f32, period: f32) -> Vec3 {
+    let p = mod3(p, period);
+    let x = p.dot(V1);
+    let y = p.dot(V2);
+    let z = p.dot(V3);
+    let mut noise = Vec3::new(x, y, z) + seedFromFloat(seed);
+
+    noise = Vec3::new(f32::sin(noise.x), f32::sin(noise.y), f32::sin(noise.z));
+
+    noise = (noise * 43758.5453).fract();
+
     return noise;
 }
 

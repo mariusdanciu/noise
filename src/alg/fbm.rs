@@ -28,14 +28,16 @@ pub fn fbm_3d(
     noise_alg: &impl Noise3D,
     persistence: f32,
     lacunarity: f32,
+    start_freq: f32,
     seed: f32,
 ) -> f32 {
     let mut sum = 0.0f32;
     let mut amplitude = 1.0;
-    let mut freq = 1.0;
+    let mut freq = start_freq;
 
     for n in 0..octaves {
-        sum += noise_alg.noise(v, freq, seed) * amplitude;
+        let n = noise_alg.noise(v, freq, seed);
+        sum += n * amplitude;
         amplitude *= persistence;
         freq *= lacunarity;
     }
