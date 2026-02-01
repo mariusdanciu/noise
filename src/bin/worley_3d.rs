@@ -20,7 +20,7 @@ fn generate(res: u32, seed: f32, offset: Vec3, noise: &impl Noise3D) -> Vec<u8> 
                 let p = Vec3::new(ix as f32, iy as f32, iz as f32);
                 let uv = p / res as f32 + offset;
 
-                let col = fbm_3d(uv, 6, noise, 0.5, 2.0, 1.0, seed);
+                let col = fbm_3d(uv, 8, noise, 0.5, 2.0, 4.0, seed);
 
                 let col = noise.rescale_01(col);
                 let inv = 1.0 - col;
