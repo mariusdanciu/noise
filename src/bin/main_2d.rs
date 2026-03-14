@@ -21,7 +21,7 @@ fn generate(
             let p = Vec2::new(ix as f32, iy as f32);
             let uv = p / res as f32 + offset;
 
-            let col = fbm(uv, 6, noise, 0.5, 2.0, seed);
+            let col = fbm(uv, 8, noise, 0.5, 2.0, 1.0, seed);
             let col = noise.rescale_01(col);
             f(ix, iy, col);
         }
@@ -31,11 +31,11 @@ fn generate(
 }
 
 fn main() {
-    let res = 500;
+    let res = 512;
     let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
 
-    let noise_alg = Worley::new();
-    generate(res, 0., Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
+    let noise_alg = Perlin::new();
+    generate(res, 0.1, Vec2::new(0., 0.0), &noise_alg, |ix, iy, col| {
         let pixel = imgbuf.get_pixel_mut(ix, iy);
 
         let noise = ((1. - col) * 255.) as u8;

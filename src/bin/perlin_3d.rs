@@ -31,12 +31,30 @@ fn generate(res: u32, seed: f32, offset: Vec3, noise: &impl Noise3D) -> Vec<u8> 
     volume
 }
 
+fn slices_to_png(volume: &Vec<u8>, res: u32) {
+    let mut imgbuf: ImageBuffer<Rgba<u8>, Vec<_>> = image::ImageBuffer::new(res, res);
+
+    for z in [0, 3, 6, 9] {
+        for y in 0..res {
+            for x in 0..res {
+                let pixel = imgbuf.get_pixel_mut(x, y);
+                let noise = volume[((z * res * res) + (y * res) + x) as usize];
+                *pixel = image::Rgba([noise, noise, noise, 255u8]);
+            }
+        }
+        imgbuf.save(format!("out-{}.png", z)).unwrap();
+    }
+}
+
 fn main() -> io::Result<()> {
     let res = 128;
 
     let noise_alg = Perlin::new();
 
     let volume = generate(res, 115., Vec3::new(0., 0.0, 0.0), &noise_alg);
+
+    slices_to_png(&volume, res);
+
     let mut file = File::create("cloud_noise.raw")?;
     file.write_all(&volume)
 }

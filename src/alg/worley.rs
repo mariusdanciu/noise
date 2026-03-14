@@ -1,4 +1,4 @@
-use crate::alg::{Noise, Noise3D, rand, rand_3d, rand_3d_periodic};
+use crate::alg::{Noise, Noise3D, rand, rand_3d, rand_3d_periodic, rand_periodic};
 use glam::{Vec2, Vec3};
 
 pub struct Worley {}
@@ -22,7 +22,7 @@ impl Noise for Worley {
             for nx in -1..=1 {
                 let neighbor = Vec2::new(nx as f32, ny as f32);
 
-                let point = ((rand(current_cell + neighbor, seed)) + 1.) * 0.5;
+                let point = ((rand_periodic(current_cell + neighbor, seed, freq)) + 1.) * 0.5;
 
                 let diff = neighbor + point - local;
 

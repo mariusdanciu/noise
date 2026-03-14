@@ -30,7 +30,11 @@ pub fn mix_f32(start: f32, stop: f32, a: f32) -> f32 {
 }
 
 pub fn mod3(x: Vec3, m: f32) -> Vec3 {
-    x - m * (x / m).floor()
+    ((x % m) + m) % m
+}
+
+pub fn mod2(x: Vec2, m: f32) -> Vec2 {
+    ((x % m) + m) % m
 }
 
 pub fn rand(p: Vec2, seed: f32) -> Vec2 {
@@ -40,7 +44,12 @@ pub fn rand(p: Vec2, seed: f32) -> Vec2 {
 
     noise = Vec2::new(f32::sin(noise.x), f32::sin(noise.y)) * 43758.5453;
     noise = Vec2::new(f32::sin(noise.x + seed), f32::sin(noise.y + seed));
-    return noise;
+    noise
+}
+
+pub fn rand_periodic(p: Vec2, seed: f32, period: f32) -> Vec2 {
+    let p = mod2(p, period);
+    rand(p, seed)
 }
 
 pub fn rand_3d(p: Vec3, seed: f32) -> Vec3 {
@@ -61,7 +70,7 @@ pub fn rand_3d(p: Vec3, seed: f32) -> Vec3 {
     return noise;
 }
 
-fn seedFromFloat(s: f32) -> Vec3 {
+fn seed_from_float(s: f32) -> Vec3 {
     return Vec3::new(
         (s * 0.1031).fract(),
         (s * 0.11369).fract(),
@@ -74,7 +83,7 @@ pub fn rand_3d_periodic(p: Vec3, seed: f32, period: f32) -> Vec3 {
     let x = p.dot(V1);
     let y = p.dot(V2);
     let z = p.dot(V3);
-    let mut noise = Vec3::new(x, y, z) + seedFromFloat(seed);
+    let mut noise = Vec3::new(x, y, z) + seed_from_float(seed);
 
     noise = Vec3::new(f32::sin(noise.x), f32::sin(noise.y), f32::sin(noise.z));
 
@@ -91,6 +100,11 @@ pub fn rand_f32(p: Vec2, seed: f32) -> f32 {
 
     noise = f32::sin(noise + seed);
     return noise;
+}
+
+pub fn rand_f32_periodic(p: Vec2, seed: f32, period: f32) -> f32 {
+    let p = mod2(p, period);
+    rand_f32(p, seed)
 }
 
 pub trait Noise {

@@ -1,6 +1,6 @@
 use glam::{Vec2, Vec3};
 
-use crate::alg::{mix_f32, quintic, rand_f32, Noise};
+use crate::alg::{Noise, mix_f32, quintic, rand_f32, rand_f32_periodic};
 
 pub struct Value {}
 
@@ -22,10 +22,10 @@ impl Noise for Value {
         let br = grid_id + Vec2::new(1.0, 1.0);
         let bl = grid_id + Vec2::new(0.0, 1.0);
 
-        let grad_tl = rand_f32(tl, seed);
-        let grad_tr = rand_f32(tr, seed);
-        let grad_br = rand_f32(br, seed);
-        let grad_bl = rand_f32(bl, seed);
+        let grad_tl = rand_f32_periodic(tl, seed, freq);
+        let grad_tr = rand_f32_periodic(tr, seed, freq);
+        let grad_br = rand_f32_periodic(br, seed, freq);
+        let grad_bl = rand_f32_periodic(bl, seed, freq);
 
         grid_uv = quintic(grid_uv);
 

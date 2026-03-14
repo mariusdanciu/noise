@@ -1,6 +1,6 @@
 use glam::{Vec2, Vec3};
 
-use crate::alg::{mix_f32, quintic, quintic3D, rand, rand_3d, Noise, Noise3D};
+use crate::alg::{Noise, Noise3D, mix_f32, quintic, quintic3D, rand, rand_3d, rand_3d_periodic, rand_periodic};
 
 pub struct Perlin {}
 
@@ -22,10 +22,10 @@ impl Noise for Perlin {
         let br = grid_id + Vec2::new(1.0, 1.0);
         let bl = grid_id + Vec2::new(0.0, 1.0);
 
-        let grad_tl = rand(tl, seed);
-        let grad_tr = rand(tr, seed);
-        let grad_br = rand(br, seed);
-        let grad_bl = rand(bl, seed);
+        let grad_tl = rand_periodic(tl, seed, freq);
+        let grad_tr = rand_periodic(tr, seed, freq);
+        let grad_br = rand_periodic(br, seed, freq);
+        let grad_bl = rand_periodic(bl, seed, freq);
 
         let uv_to_tl = grid_uv - Vec2::new(0.0, 0.0);
         let uv_to_tr = grid_uv - Vec2::new(1.0, 0.0);
@@ -69,15 +69,15 @@ impl Noise3D for Perlin {
         let br_back = grid_id + Vec3::new(1.0, 1.0, 1.0);
         let bl_back = grid_id + Vec3::new(0.0, 1.0, 1.0);
 
-        let grad_tl_front = rand_3d(tl_front, seed);
-        let grad_tr_front = rand_3d(tr_front, seed);
-        let grad_br_front = rand_3d(br_front, seed);
-        let grad_bl_front = rand_3d(bl_front, seed);
+        let grad_tl_front = rand_3d_periodic(tl_front, seed, freq);
+        let grad_tr_front = rand_3d_periodic(tr_front, seed, freq);
+        let grad_br_front = rand_3d_periodic(br_front, seed, freq);
+        let grad_bl_front = rand_3d_periodic(bl_front, seed, freq);
 
-        let grad_tl_back = rand_3d(tl_back, seed);
-        let grad_tr_back = rand_3d(tr_back, seed);
-        let grad_br_back = rand_3d(br_back, seed);
-        let grad_bl_back = rand_3d(bl_back, seed);
+        let grad_tl_back = rand_3d_periodic(tl_back, seed, freq);
+        let grad_tr_back = rand_3d_periodic(tr_back, seed, freq);
+        let grad_br_back = rand_3d_periodic(br_back, seed, freq);
+        let grad_bl_back = rand_3d_periodic(bl_back, seed, freq);
 
         let uv_to_tl_front = grid_uv - Vec3::new(0.0, 0.0, 0.0);
         let uv_to_tr_front = grid_uv - Vec3::new(1.0, 0.0, 0.0);
